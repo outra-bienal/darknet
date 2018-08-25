@@ -582,6 +582,17 @@ void test_detector(char *datacfg, char *cfgfile, char *weightfile, char *filenam
             input = fgets(input, 256, stdin);
             if(!input) return;
             strtok(input, "\n");
+            char * new_str ;
+            if((new_str = malloc(strlen(input)+strlen("pred.png")+1)) != NULL){
+                new_str[0] = '\0';   // ensures the memory is an empty string
+                strcat(new_str, input);
+                strcat(new_str, ".pred.png");
+            } else {
+                fprintf(stderr, "malloc failed!\n");
+                // exit?
+            }
+            outfile = new_str;
+            printf("---- New outfile: %s\n", outfile);
         }
         image im = load_image_color(input,0,0);
         image sized = letterbox_image(im, net->w, net->h);
